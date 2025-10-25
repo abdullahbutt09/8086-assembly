@@ -2,35 +2,48 @@
 .stack 100h
 
 .data
-num1 db 5
-num2 db 1
+
+num1 db 0
+num2 db 10
+
 msg1 db 'num1 is greater$'
 msg2 db 'num2 is greater$'
 
 .code
-main proc
-    mov ax, @data     ; Load data segment
-    mov ds, ax
+main proc 
+    
+mov ax, @data
+mov ds, ax
 
-    mov al, num1      ; AL = num1
-    mov bl, num2      ; BL = num2
-    cmp al, bl        ; Compare num1 and num2
+mov al, [num1]
+mov bl, [num2] 
 
-    jg greater        ; Jump if num1 > num2
+cmp al, bl
 
-    ; If num2 > num1
-    mov dx, offset msg2
-    mov ah, 9
-    int 21h
-    jmp done
+jg GREATER
 
-greater:
-    mov dx, offset msg1
-    mov ah, 9
-    int 21h
+mov dl, 0   
 
-done:
-    mov ah, 4Ch       ; Exit program
-    int 21h
+mov dx, offset msg2
+mov ah, 9h
+int 21h   
+
+jmp DONE
+       
+GREATER:
+
+mov dl, 1
+   
+mov dx, offset msg1
+mov ah,09h
+int 21h   
+       
+DONE:  
+
+;mov ah, 4Ch
+;int 21h
+
+HLT
+
 main endp
-end main
+end main         
